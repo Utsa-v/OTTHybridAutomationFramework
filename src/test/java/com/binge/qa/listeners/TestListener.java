@@ -86,8 +86,8 @@ public class TestListener implements ITestListener, IAnnotationTransformer {
 
     @Override
     public void onFinish(ITestContext context) {
-        if (MyExtentReport.getExtentReport() != null) {
-            MyExtentReport.getExtentReport().flush();
+        if (extent != null) {
+            extent.flush();
         }
     }
 
