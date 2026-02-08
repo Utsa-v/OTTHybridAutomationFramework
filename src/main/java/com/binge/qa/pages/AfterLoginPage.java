@@ -14,7 +14,7 @@ public class AfterLoginPage extends BasePage {
     }
 
 
-    @FindBy (css=".account-dropdown")
+    @FindBy (css=".logged-in-user-img")
     private WebElement accountSetting;
 
     @FindBy (xpath = "//div[text()='Settings']")
@@ -44,18 +44,31 @@ public class AfterLoginPage extends BasePage {
     @FindBy(xpath = "//span[text()='My Binge List']/preceding-sibling::img")
     private WebElement addBingeListElement;
 
+    @FindBy (xpath = "//p[text()=\"Manage Devices\"]")
+    private WebElement manageDeviceSection;
+
+    @FindBy(css=".select-content")
+    private List<WebElement> manageDevicesList;
+
+    @FindBy(css=".active")
+    private WebElement manageDeviceAfterClick;
+
+    @FindBy(xpath = "//span[text()=\"Remove Device\"]")
+    private WebElement  removeDevice;
+
     private By forwardCTALocator = By.cssSelector(".icon-forward");
 
     private By profileUpdateToast = By.xpath("//div[contains(@class,'Toastify__toast-body')]/div[contains(text(),'Subscriber Details Updated')]");
-
 
     //private By addBingeListLocator = By.xpath("//span[text()='My Binge List']/preceding-sibling::img");
 
     private By bingeListToastLocator = By.xpath("//div[contains(@class,'Toastify__toast-body')]//div[contains(text(),'Binge List')]");
 
     public void clickProfile(){
-        waitForVisibility(accountSetting);
-        action.moveToElement(accountSetting).click().perform();
+        //waitForVisibility(accountSetting);
+        //action.moveToElement(accountSetting).click().perform();
+        waitForClickability(accountSetting);
+        jsClick(accountSetting);
     }
 
     public void settingClick(){
@@ -89,6 +102,33 @@ public class AfterLoginPage extends BasePage {
         settingClick();
         nameInputClick();
         saveCTAClick();
+    }
+
+    public List <WebElement> listOfDevices(){
+        waitForVisibilityOfAll(manageDevicesList);
+        return  manageDevicesList;
+    }
+
+    public int deviceCount(){
+        return listOfDevices().size();
+    }
+
+    public int manageDevices(){
+        clickProfile();
+        settingClick();
+        waitForClickability(manageDeviceSection);
+        manageDeviceSection.click();
+
+        if(listOfDevices().isEmpty() ){
+          return 0;
+        }
+        waitForClickability(listOfDevices().getFirst());
+        jsClick(listOfDevices().getFirst());
+        waitForVisibility(manageDeviceAfterClick);
+        waitForClickability(removeDevice);
+        jsClick(removeDevice);
+
+        return listOfDevices().size();
     }
 
     public boolean profileUpdateToast(){
