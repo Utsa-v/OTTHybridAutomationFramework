@@ -47,7 +47,7 @@ public class AfterLoginPage extends BasePage {
     @FindBy (xpath = "//p[text()=\"Manage Devices\"]")
     private WebElement manageDeviceSection;
 
-    @FindBy(css=".select-content")
+    @FindBy(css=".device")
     private List<WebElement> manageDevicesList;
 
     @FindBy(css=".active")
@@ -104,13 +104,9 @@ public class AfterLoginPage extends BasePage {
         saveCTAClick();
     }
 
-    public List <WebElement> listOfDevices(){
-        waitForVisibilityOfAll(manageDevicesList);
-        return  manageDevicesList;
-    }
 
     public int deviceCount(){
-        return listOfDevices().size();
+        return manageDevicesList.size();
     }
 
     public int manageDevices(){
@@ -118,17 +114,19 @@ public class AfterLoginPage extends BasePage {
         settingClick();
         waitForClickability(manageDeviceSection);
         manageDeviceSection.click();
+        waitForVisibilityOfAll(manageDevicesList);
+        int deviceCount = manageDevicesList.size();
+        if(deviceCount>1){
+            waitForClickability(manageDevicesList.getFirst());
+            jsClick(manageDevicesList.getFirst());
+            //waitForVisibility(manageDeviceAfterClick);
+            waitForClickability(removeDevice);
+            jsClick(removeDevice);
+            deviceCount= manageDevicesList.size();
 
-        if(listOfDevices().isEmpty() ){
-          return 0;
         }
-        waitForClickability(listOfDevices().getFirst());
-        jsClick(listOfDevices().getFirst());
-        waitForVisibility(manageDeviceAfterClick);
-        waitForClickability(removeDevice);
-        jsClick(removeDevice);
 
-        return listOfDevices().size();
+        return deviceCount;
     }
 
     public boolean profileUpdateToast(){

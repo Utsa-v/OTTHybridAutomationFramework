@@ -32,7 +32,11 @@ public class BaseTest {
         String browser = config.getProperty("browserName");
         String url = config.getProperty("URL");
         if (browser.equalsIgnoreCase("chrome")) {
-            driver = new ChromeDriver();
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--incognito");
+
+            options.addArguments("--start-maximized");
+            driver = new ChromeDriver(options);
         }
         else if(browser.equalsIgnoreCase("fireFox")){
             driver = new FirefoxDriver();

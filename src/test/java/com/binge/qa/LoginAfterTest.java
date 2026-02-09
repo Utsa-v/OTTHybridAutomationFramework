@@ -29,20 +29,20 @@ public class LoginAfterTest extends BaseTest {
 
     }
 
-    @Test(priority =1)
+    @Test(priority =3)
     public void profileSetting() {
         ap.clickProfile();
         ap.settingClick();
         Assert.assertEquals(ap.setting(), "Settings");
     }
 
-    @Test (priority =2)
+    @Test (priority =4)
     public void profileName()  {
         ap.updateProfileName();
         Assert.assertTrue(ap.profileUpdateToast());
     }
 
-    @Test (priority =3)
+    @Test (priority =1)
     public void addAndRemoveToBingeList() throws InterruptedException {
         Thread.sleep(7000);
         sp.searchIconClick();
@@ -52,7 +52,7 @@ public class LoginAfterTest extends BaseTest {
         Assert.assertTrue(ap.bingeLisToast());
     }
 
-    @Test(priority =4)
+    @Test(priority =2)
     public void playback() throws InterruptedException {
         Thread.sleep(7000);
         sp.searchIconClick();
@@ -66,6 +66,12 @@ public class LoginAfterTest extends BaseTest {
 
         Assert.assertNotEquals(ap.beforeWatchTime(), ap.afterWatchTime());
         driver.navigate().back();
+    }
+
+    @Test(priority = 5)
+    public void manageDevices(){
+        ap.manageDevices();
+        Assert.assertNotEquals(ap.deviceCount(),ap.manageDevices());
     }
 
 }
